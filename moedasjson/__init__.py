@@ -1,0 +1,1 @@
+from .moedasjson import moedas
