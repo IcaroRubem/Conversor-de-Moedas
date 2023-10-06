@@ -1,0 +1,8 @@
+<Item>:
+    on_release:
+        app.taxa_de_cambio = 0
+        app.root.ids.lista_de_moedas.atualizar_moeda(app.root, self.text, self.secondary_text, self.icone, app)
+        app.root.ids.menu_bottom.close()
+    ImageLeftWidget:
+        source: root.icone
+        radius: [25, 25, 25, 25]
