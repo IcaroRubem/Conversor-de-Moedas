@@ -73,7 +73,7 @@ class App(MDApp):
         Clock.schedule_interval(self.resultado, 6)
     
     def sobre(self):
-        webopen("https://github.com/IcaroRubem")
+        webopen("https://github.com/IcaroRubem/Conversor-de-Moedas")
         
     def wifi_info(self, text):
         toast(text)
