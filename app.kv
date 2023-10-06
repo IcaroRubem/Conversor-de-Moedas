@@ -1,0 +1,132 @@
+#: include view/listademoedas.kv
+#: include view/item.kv
+
+<Gerenciador>:
+    orientation: "vertical"
+    md_bg_color: "#000000"
+    color: "#ffffff"
+    MDTopAppBar:
+        id: topappbar
+        title: "Convert +"
+        pos_hint: {"top":1}
+        md_bg_color: "#000000"
+        right_action_items: [["wifi-check", lambda x: app.wifi_info("Conectado"),"Wifi Conectado"],["information-outline", lambda x: app.sobre(), "sobre"]]
+        
+    MDFloatLayout:
+        orientation: "vertical"
+        md_bg_color:"#1C1C1C"
+        MDBoxLayout:
+            orientation: "vertical"
+            md_bg_color: "#292929" #"#17191a"
+            pos_hint: {"center_x": 0.5, "center_y": 0.78}
+            size_hint_y: 0.38
+            size_hint_x: 0.9
+            radius: [28]
+            MDLabel:
+                text: "Converter"
+                pos_hint: {"center_y": 0.95}
+                halign: "center"
+            MDBoxLayout:
+                align: "center"
+                MDLabel:
+                    text: "Origem:"
+                    halign: "center"
+                MDLabel:
+                    id: orig
+                    text: "Real Brasileiro"
+                    halign: "left"
+            MDBoxLayout:
+                MDLabel:
+                    text: "Destino:"
+                    halign: "center"
+                MDLabel:
+                    id: dest
+                    text: "Dolar Americano"
+                    halign: "left"
+            MDBoxLayout:
+                MDLabel:
+                    text: "Cambio:"
+                    halign: "center"
+                MDLabel:
+                    id: rtd
+                    text: "0,00"
+                    halign: "left"
+           
+        MDTextField:
+            id: qtd
+            text: "1.00"
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            size_hint_x: 0.8
+            halign: "center"
+            font_size: 50
+            input_filter: "float"
+            text_color_normal: "#ffffff"
+            on_text: app.cambiar()
+            
+        TwoLineAvatarIconListItem:
+            id: origem
+            pos_hint: {"center_x": 0.5, "center_y": 0.35}
+            size_hint_x: 0.98
+            text: "Dólar Americano"
+            secondary_text: "USD"
+        
+            ImageLeftWidget:
+                id: img_origem
+                source: "images/USD.png"
+                radius: [50]
+        
+            IconRightWidget:
+                icon: "arrow-down-drop-circle-outline"
+                on_release:
+                    app.root.ids.lista_de_moedas.moeda_selecionada = "origem"
+                    app.root.ids.lista_de_moedas.img_src = "img_origem"
+                    app.root.ids.menu_bottom.open()
+                
+        MDFloatingActionButton:
+            pos_hint: {"center_x": 0.5,"center_y": 0.25}
+            icon: "autorenew"
+            md_bg_color: "#696969"
+            on_release: app.root.ids.lista_de_moedas.trocar_moedas(app.root, app)
+                        
+        TwoLineAvatarIconListItem:
+            id: destino
+            pos_hint: {"center_x": 0.5, "center_y": 0.15}
+            size_hint_x: 0.98
+            text: "Real Brasileiro"
+            secondary_text: "BRL"
+        
+            ImageLeftWidget:
+                id: img_destino
+                source: "images/BRL.png"
+                radius: [50]
+        
+            IconRightWidget:
+                icon: "arrow-down-drop-circle-outline"
+                on_release:
+                    app.root.ids.lista_de_moedas.moeda_selecionada = "destino"
+                    app.root.ids.lista_de_moedas.img_src = "img_destino"
+                    app.root.ids.menu_bottom.open()
+               
+        BottomMotion:
+            id: menu_bottom
+            md_bg_color: '#0e0212'
+            move_duration: 0.6
+            bottom_size: .9
+            MDBoxLayout:
+                orientation: 'vertical'
+                MDIconButton:
+                    icon: "chevron-down"
+                    on_release:
+                        root.ids.menu_bottom.close()
+                
+                MDTextField:
+                    id: search
+                    size_hint_x: .8
+                    pos_hint: {"center_x": .5}
+                    icon_left: "magnify"
+                    halign: "center"
+                    font_size: 50
+                    on_text: root.ids.lista_de_moedas.pesquisar_moedas(self.text)
+                    
+                ListaDeMoedas:
+                    id: lista_de_moedas
