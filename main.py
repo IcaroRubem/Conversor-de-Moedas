@@ -65,11 +65,13 @@ class Item(TwoLineAvatarIconListItem):
 class App(MDApp):
     taxa_de_cambio = 0
     wifi_conect = True
+    api = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies"
     def build(self):
         self.theme_cls.theme_style = "Dark"
         return Gerenciador()
    
     def on_start(self):
+        self.resultado()
         Clock.schedule_interval(self.resultado, 6)
     
     def sobre(self):
@@ -84,7 +86,7 @@ class App(MDApp):
     
     def resultado(self, *args):
         try:
-            self.taxa_de_cambio = get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/{self.root.ids.origem.secondary_text.lower()}/{self.root.ids.destino.secondary_text.lower()}.json", timeout=3).json()[self.root.ids.destino.secondary_text.lower()]
+            self.taxa_de_cambio = get(f"{self.api}/{self.root.ids.origem.secondary_text.lower()}.json", timeout=3).json().get(self.root.ids.origem.secondary_text.lower()).get(self.root.ids.destino.secondary_text.lower(), 0)
             self.cambiar()
             if not self.wifi_conect:
                 self.root.ids.topappbar.right_action_items[0] = ["wifi-check", lambda x: self.wifi_info("Conectado"),"Conectado"]     
